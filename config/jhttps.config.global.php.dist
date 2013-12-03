@@ -1,0 +1,17 @@
+<?php
+/**
+ * Config file for JHttps Module
+ */
+
+$config = array(
+	'force_http' => array(
+		/**
+		 * Put your https route here
+		 */
+		'routes' => array(
+			//'zfcuser',
+            //'zfcuser/login'
+		)
+	);
+);
+return $config;

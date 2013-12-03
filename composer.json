@@ -1,0 +1,29 @@
+{
+    "name": "stefanorg/jhttps",
+    "description": "Zf2 module to force https route",
+    "type": "library",
+    "keywords": [
+        "https",
+        "module",
+        "library",
+        "zf2"
+    ],
+    "homepage": "https://github.com/stefanorg/JHttpsModule",
+    "authors" : [{
+        "name": "Stefano Corallo",
+        "email" : "stefanorg@gmail.com",
+        "homepage" : "http://stefanorg.github.io"
+    }],
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=5.3",
+    },
+    "autoload": {
+        "psr-0": {
+            "JHttps": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}
