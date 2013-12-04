@@ -32,7 +32,7 @@ class JHttpsRouteListener implements ListenerAggregateInterface
     	$sl = $e->getApplication()->getServiceManager();
         $config = $sl->get('Config');
 
-        $https_config = isset($config['force_https']) ? $config['force_https'] : array();
+        $https_config = isset($config['jhttps']) ? $config['jhttps'] : array();
 
         $https_routes = isset($https_config['routes']) ? $https_config['routes'] : array();
 
@@ -40,35 +40,31 @@ class JHttpsRouteListener implements ListenerAggregateInterface
         $uri = $router->getRequestUri();
 
         $routeMatch = $e->getRouteMatch();
-        $action = $routeMatch->getParam('action');
-        $controller = $routeMatch->getParam('controller');
         $matchedRouteName = $routeMatch->getMatchedRouteName();
+        $resetToHttp = isset($https_config['force_http_for_non_https_route']) ? $https_config['force_http_for_non_https_route'] : true ;
         
-        if(in_array($matchedRouteName, $https_routes)){
+
+        if(in_array($matchedRouteName, $https_routes) && ("https" !== $uri->getScheme()) ){
             // se la rotta richiede https
             // verifico e forzo lo schema https
-            if ( "https" !== $uri->getScheme() ) {
-                $uri->setScheme("https");
-                $uri->setPort(null);
-                $url = $uri->toString();
-                $response=$e->getResponse();
-                $response->getHeaders()->addHeaderLine('Location', $url);
-                $response->setStatusCode(302);
-                $response->sendHeaders();
-                return $response;
-            }
-        }else{
+            $uri->setScheme("https");
+            $uri->setPort(null);
+            $url = $uri->toString();
+            $response=$e->getResponse();
+            $response->getHeaders()->addHeaderLine('Location', $url);
+            $response->setStatusCode(302);
+            $response->sendHeaders();
+            return $response;
+        }elseif( ("https" === $uri->getScheme()) && $resetToHttp ){
             //se la rotta non richiede https controllo se schema https in tal caso lo imposto a http
-            if ( "https" === $uri->getScheme() ) {
-                $uri->setScheme("http");
-                $uri->setPort(null);
-                $url = $uri->toString();
-                $response=$e->getResponse();
-                $response->getHeaders()->addHeaderLine('Location', $url);
-                $response->setStatusCode(302);
-                $response->sendHeaders();
-                return $response;   
-            }
+            $uri->setScheme("http");
+            $uri->setPort(null);
+            $url = $uri->toString();
+            $response=$e->getResponse();
+            $response->getHeaders()->addHeaderLine('Location', $url);
+            $response->setStatusCode(302);
+            $response->sendHeaders();
+            return $response;   
         }
     }
 }

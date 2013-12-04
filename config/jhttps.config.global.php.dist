@@ -1,17 +1,13 @@
 <?php
-/**
- * Config file for JHttps Module
- */
-
 $config = array(
-	'force_http' => array(
-		/**
-		 * Put your https route here
-		 */
-		'routes' => array(
-			//'zfcuser',
-            //'zfcuser/login'
-		)
-	);
+	'jhttps' => array(
+    	/**
+    	 * If you want reset to http scheme for non https route
+    	 */
+    	'force_http_for_non_https_route' => true,
+    	'routes' => array(
+    		//'zfcuser/login'
+    	)
+    )
 );
 return $config;
