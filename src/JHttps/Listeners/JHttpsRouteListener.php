@@ -7,6 +7,7 @@
 namespace JHttps\Listeners;
 
 use Zend\EventManager\ListenerAggregateInterface;
+use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\MvcEvent;
 
 class JHttpsRouteListener implements ListenerAggregateInterface
