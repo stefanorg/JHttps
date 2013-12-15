@@ -44,8 +44,8 @@ class JHttpsRouteListener implements ListenerAggregateInterface
         $matchedRouteName = $routeMatch->getMatchedRouteName();
         $resetToHttp = isset($https_config['force_http_for_non_https_route']) ? $https_config['force_http_for_non_https_route'] : true ;
         
-
-        if(in_array($matchedRouteName, $https_routes) && ("https" !== $uri->getScheme()) ){
+        $routeFound = in_array($matchedRouteName, $https_routes);
+        if($routeFound && ("https" !== $uri->getScheme()) ){
             // se la rotta richiede https
             // verifico e forzo lo schema https
             $uri->setScheme("https");
@@ -56,7 +56,7 @@ class JHttpsRouteListener implements ListenerAggregateInterface
             $response->setStatusCode(302);
             $response->sendHeaders();
             return $response;
-        }elseif( ("https" === $uri->getScheme()) && $resetToHttp ){
+        }elseif(!$routeFound && ("https" === $uri->getScheme()) && $resetToHttp ){
             //se la rotta non richiede https controllo se schema https in tal caso lo imposto a http
             $uri->setScheme("http");
             $uri->setPort(null);
