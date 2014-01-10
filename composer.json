@@ -9,14 +9,23 @@
         "zf2"
     ],
     "homepage": "https://github.com/stefanorg/JHttps",
-    "authors" : [{
-        "name": "Stefano Corallo",
-        "email" : "stefanorg@gmail.com",
-        "homepage" : "http://stefanorg.github.io"
-    }],
+    "authors": [
+        {
+            "name": "Stefano Corallo",
+            "email": "stefanorg@gmail.com",
+            "homepage": "http://stefanorg.github.io"
+        }
+    ],
     "license": "BSD-3-Clause",
     "require": {
-        "php": ">=5.3"
+        "php": ">=5.3",
+        "zendframework/zend-modulemanager": "2.*",
+        "zendframework/zend-loader": "2.*",
+        "zendframework/zend-eventmanager": "2.*",
+        "zendframework/zend-mvc": "2.*"
+    },
+    "require-dev": {
+        "robertboloc/zf2-components-list-generator": "dev-master"
     },
     "autoload": {
         "psr-0": {
