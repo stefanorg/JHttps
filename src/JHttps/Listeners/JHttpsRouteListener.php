@@ -6,6 +6,7 @@
 
 namespace JHttps\Listeners;
 
+use Zend\Console\Console;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\MvcEvent;
@@ -30,6 +31,11 @@ class JHttpsRouteListener implements ListenerAggregateInterface
 
     public function preDispatch($e)
     {
+        //skip console request
+        if (Console::isConsole()) {
+            return;
+        }
+
     	$sl = $e->getApplication()->getServiceManager();
         $config = $sl->get('Config');
 
@@ -43,7 +49,7 @@ class JHttpsRouteListener implements ListenerAggregateInterface
         $routeMatch = $e->getRouteMatch();
         $matchedRouteName = $routeMatch->getMatchedRouteName();
         $resetToHttp = isset($https_config['force_http_for_non_https_route']) ? $https_config['force_http_for_non_https_route'] : true ;
-        
+
         $routeFound = in_array($matchedRouteName, $https_routes);
         if($routeFound && ("https" !== $uri->getScheme()) ){
             // se la rotta richiede https
@@ -65,7 +71,7 @@ class JHttpsRouteListener implements ListenerAggregateInterface
             $response->getHeaders()->addHeaderLine('Location', $url);
             $response->setStatusCode(302);
             $response->sendHeaders();
-            return $response;   
+            return $response;
         }
     }
 }
